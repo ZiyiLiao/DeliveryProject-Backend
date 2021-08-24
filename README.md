@@ -2,6 +2,8 @@
 
 This is the repository of Delivery Project Backend
 
+## Team member
+
 ## ER diagram
 
 ## API designs
