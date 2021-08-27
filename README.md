@@ -21,4 +21,4 @@ This is the repository of Delivery Project Backend
 For detailed information, please check [here](https://doris.incubator.apache.org/master/zh-CN/community/pull-request.html)
 
 ## Name rules:
-We can follow [Google naming roole](https://google.github.io/styleguide/cppguide.html#Naming)
+We can follow [Google naming rule](https://google.github.io/styleguide/cppguide.html#Naming)
