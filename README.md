@@ -19,3 +19,6 @@ This is the repository of Delivery Project Backend
 4. Checkout new branch based on the latest upstream branch
 5. After changes, create a pull request
 For detailed information, please check [here](https://doris.incubator.apache.org/master/zh-CN/community/pull-request.html)
+
+## Name rules:
+We can follow [Google naming roole](https://google.github.io/styleguide/cppguide.html#Naming)
