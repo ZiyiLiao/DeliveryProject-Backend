@@ -25,7 +25,7 @@ public class ApplicationConfig {
         catch (FileNotFoundException e){
             e.printStackTrace();
         }
-        sessionFactory.setPackagesToScan("com.laioffer.onlineOrder.entity");
+        sessionFactory.setPackagesToScan("com.owly.delivery.entity");
         sessionFactory.setHibernateProperties(hibernateProperties());
         System.out.println("Session initialization successful");
         return sessionFactory;
@@ -49,15 +49,16 @@ public class ApplicationConfig {
         }
 
         String CLOUD_SQL_CONNECTION_NAME = (String)dbProperties.get("connection_name");
+        String DB_NAME = "owly";
         String DB_USER = (String)dbProperties.get("user_name");
         String DB_PASS = (String)dbProperties.get("password");
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        // 只需要修改红色部分, 保留其他内容,  YOUR_RDS_INSTANCE_ADDRESS,USERNAME,  PASSWORD可以回到第一个项目的MysqlDBUtil.java去找
-        dataSource.setUrl("jdbc:mysql://"+CLOUD_SQL_CONNECTION_NAME);
-        dataSource.setUsername(DB_USER);
-        dataSource.setPassword(DB_PASS);
 
+        String configURL =
+            String.format("jdbc:mysql://%s/%s?user=%s&password=%s&autoReconnect=true&serverTimezone=UTC&createDatabaseIfNotExist=true",
+            CLOUD_SQL_CONNECTION_NAME, DB_NAME, DB_USER, DB_PASS);
+        dataSource.setUrl(configURL);
         return dataSource;
     }
 
