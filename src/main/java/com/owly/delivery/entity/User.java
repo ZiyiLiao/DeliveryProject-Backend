@@ -2,9 +2,11 @@ package com.owly.delivery.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 
 @Entity
+@Table(name = "user")
 public class User implements Serializable {
     private static final long serialVersionUID = 2652327633296064143L;
 
