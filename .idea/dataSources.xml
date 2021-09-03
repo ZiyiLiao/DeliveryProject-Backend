@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="Owly" uuid="9ff02e3b-e74c-4ce6-8031-62c1cb83ff3d">
+    <data-source source="LOCAL" name="Owly" uuid="4cc90900-5dbc-4873-bf98-bebc27e398c9">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://34.66.190.160:3306</jdbc-url>
+      <jdbc-url>jdbc:mysql://34.66.190.160:3306/owly</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>
