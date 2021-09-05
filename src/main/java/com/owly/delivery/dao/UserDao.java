@@ -2,8 +2,10 @@ package com.owly.delivery.dao;
 
 import com.owly.delivery.entity.Authorities;
 import com.owly.delivery.entity.User;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -39,7 +41,9 @@ public class UserDao {
     public User getUser(String email) {
         User user = null;
         try (Session session = sessionFactory.openSession()) {
-            user = session.get(User.class, email);
+            Criteria criteria = session.createCriteria(User.class);
+            user = (User) criteria.add(Restrictions.eq("email", email))
+                    .uniqueResult();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
