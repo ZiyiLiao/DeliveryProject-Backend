@@ -1,9 +1,6 @@
 package com.owly.delivery.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
@@ -11,18 +8,20 @@ public class User implements Serializable {
     private static final long serialVersionUID = 2652327633296064143L;
 
 
-//    @GeneratedValue(strategy = GenerationType.AUTO)
-//    private int userId;
     @Id
+    @GeneratedValue
+    private int userId;
+
+    @Column(unique = true)
     private String email;
     private String password;
     private String firstName;
     private String lastName;
     private boolean enabled;
 
-//    public void setUserId(int userId) {
-//        this.userId = userId;
-//    }
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 
     public void setEmail(String email) {
         this.email = email;
@@ -40,9 +39,9 @@ public class User implements Serializable {
         this.lastName = lastName;
     }
 
-////    public int getUserId() {
-//        return userId;
-//    }
+    public int getUserId() {
+        return userId;
+    }
 
     public String getEmail() {
         return email;
@@ -68,26 +67,26 @@ public class User implements Serializable {
         this.enabled = enabled;
     }
 
-//    @Override
-//    public String toString() {
-//        return "User{" +
-//            "userId=" + userId +
-//            ", email='" + email + '\'' +
-//            ", password='" + password + '\'' +
-//            ", firstName='" + firstName + '\'' +
-//            ", lastName='" + lastName + '\'' +
-//            '}';
-//    }
-
-
     @Override
     public String toString() {
         return "User{" +
-                "email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", enabled=" + enabled +
-                '}';
+            "userId=" + userId +
+            ", email='" + email + '\'' +
+            ", password='" + password + '\'' +
+            ", firstName='" + firstName + '\'' +
+            ", lastName='" + lastName + '\'' +
+            '}';
     }
+
+
+//    @Override
+//    public String toString() {
+//        return "User{" +
+//                "email='" + email + '\'' +
+//                ", password='" + password + '\'' +
+//                ", firstName='" + firstName + '\'' +
+//                ", lastName='" + lastName + '\'' +
+//                ", enabled=" + enabled +
+//                '}';
+//    }
 }
