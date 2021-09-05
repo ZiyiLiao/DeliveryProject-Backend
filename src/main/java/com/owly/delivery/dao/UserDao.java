@@ -12,7 +12,7 @@ public class UserDao {
     @Autowired
     private SessionFactory sessionFactory;
 
-    public void signUp(User user) {
+    public void signUp(User user) throws Exception {
         Authorities authorities = new Authorities();
         authorities.setAuthorities("ROLE_USER");
         authorities.setEmail(user.getEmail());
@@ -28,6 +28,7 @@ public class UserDao {
         } catch (Exception ex) {
             ex.printStackTrace();
             session.getTransaction().rollback();
+            throw new Exception(ex);
         } finally {
             if (session != null) {
                 session.close();

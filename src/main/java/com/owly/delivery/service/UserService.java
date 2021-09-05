@@ -12,9 +12,14 @@ public class UserService {
     @Autowired
     private UserDao userDao;
 
-    public void signUp(User user) {
+    public void signUp(User user) throws Exception {
         user.setEnabled(true);
-        userDao.signUp(user);
+
+        try{
+            userDao.signUp(user);
+        } catch (Exception ex){
+            throw new Exception(ex);
+        }
     }
 
     public User getUser(String email) {
