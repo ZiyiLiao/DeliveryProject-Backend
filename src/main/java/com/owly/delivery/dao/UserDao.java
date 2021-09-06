@@ -49,4 +49,34 @@ public class UserDao {
         }
         return user;
     }
+
+    public User getUserById(int userId) {
+        User user = null;
+        try  {
+            Session session = sessionFactory.openSession();
+            user = session.get(User.class, userId);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return user;
+    }
+
+
+    public User editUser(User user) {
+        Session session = null;
+        int userId = user.getUserId();
+        user.setEnabled(true);
+        try {
+            session = sessionFactory.openSession();
+            session.beginTransaction();
+            session.update(user);
+            session.getTransaction().commit();
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            if (session != null) session.getTransaction().rollback();
+        }
+
+        return getUserById(userId);
+    }
 }
