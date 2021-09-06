@@ -2,7 +2,7 @@ package com.owly.delivery.dao;
 
 import com.owly.delivery.entity.Authorities;
 import com.owly.delivery.entity.User;
-import com.owly.delivery.entity.Authorities;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -41,10 +41,42 @@ public class UserDao {
     public User getUser(String email) {
         User user = null;
         try (Session session = sessionFactory.openSession()) {
-            user = session.get(User.class, email);
+            Criteria criteria = session.createCriteria(User.class);
+            user = (User) criteria.add(Restrictions.eq("email", email))
+                    .uniqueResult();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
         return user;
+    }
+
+    public User getUserById(int userId) {
+        User user = null;
+        try  {
+            Session session = sessionFactory.openSession();
+            user = session.get(User.class, userId);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return user;
+    }
+
+
+    public User editUser(User user) {
+        Session session = null;
+        int userId = user.getUserId();
+        user.setEnabled(true);
+        try {
+            session = sessionFactory.openSession();
+            session.beginTransaction();
+            session.update(user);
+            session.getTransaction().commit();
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            if (session != null) session.getTransaction().rollback();
+        }
+
+        return getUserById(userId);
     }
 }
