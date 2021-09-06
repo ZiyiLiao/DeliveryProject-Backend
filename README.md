@@ -34,8 +34,9 @@ This is the repository of Delivery Project Backend
 5. Checkout a new branch based on the latest code
     1. `git checkout -b OWLY-<your_name>-<function>-<version>`
     2. Made some changes
-    3. `git commit -am “<your_branch_name>: messages”`
-    4. `git push origin`
+    3. `git -add <file1>`, `git -add <file2>` ..  (manually add all files you want to commit)
+    4. `git commit -m “<your_branch_name>: messages”`
+    5. `git push origin`
 6. Create pull request
     1. We should have someone write some comments on the code
 
