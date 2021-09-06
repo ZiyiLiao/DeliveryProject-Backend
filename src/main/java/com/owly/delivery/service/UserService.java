@@ -26,5 +26,15 @@ public class UserService {
         return userDao.getUser(email);
     }
 
+
+    public User editUser(User newUser) throws Exception{
+        User user = null;
+        try {
+            user = userDao.editUser(newUser);
+        } catch (Exception ex){
+            throw new Exception(ex);
+        }
+        return user;
+    }
 }
 
