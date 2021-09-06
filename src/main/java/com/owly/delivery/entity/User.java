@@ -1,7 +1,11 @@
 package com.owly.delivery.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.awt.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 public class User implements Serializable {
@@ -18,6 +22,19 @@ public class User implements Serializable {
     private String firstName;
     private String lastName;
     private boolean enabled;
+
+
+    @OneToMany(mappedBy = "user",  cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnore
+    private List<Address> addressListList;
+
+    public List<Address> getAddressListList() {
+        return addressListList;
+    }
+
+    public void setAddressListList(List<Address> addressListList) {
+        this.addressListList = addressListList;
+    }
 
     public void setUserId(int userId) {
         this.userId = userId;
