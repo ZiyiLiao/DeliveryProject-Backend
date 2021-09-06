@@ -1,6 +1,6 @@
 
 /src/main/resources/config.properties
 *.properties
-target/
+.target/
 .idea/
-.DS_store/
+.DS_store
