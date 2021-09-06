@@ -1,15 +1,18 @@
 package com.owly.delivery.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
 public class User implements Serializable {
     private static final long serialVersionUID = 2652327633296064143L;
 
+
     @Id
+    @GeneratedValue
     private int userId;
+
+    @Column(unique = true)
     private String email;
     private String password;
     private String firstName;
@@ -74,4 +77,16 @@ public class User implements Serializable {
             ", lastName='" + lastName + '\'' +
             '}';
     }
+
+
+//    @Override
+//    public String toString() {
+//        return "User{" +
+//                "email='" + email + '\'' +
+//                ", password='" + password + '\'' +
+//                ", firstName='" + firstName + '\'' +
+//                ", lastName='" + lastName + '\'' +
+//                ", enabled=" + enabled +
+//                '}';
+//    }
 }
