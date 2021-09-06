@@ -3,4 +3,4 @@
 *.properties
 .target/
 .idea/
-.DS_store
+
