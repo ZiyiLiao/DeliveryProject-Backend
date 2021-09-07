@@ -13,7 +13,10 @@ public class CreditCard implements Serializable {
     private long cardNumber;
     private int userID;
     private String firstName;
-    private Date expirationDate;
+    private String expirationDate;
+    private int cvv;
+
+
     private String lastName;
     private String zipCode;
     private String address;
@@ -46,13 +49,22 @@ public class CreditCard implements Serializable {
         this.firstName = firstName;
     }
 
-    public Date getExpirationDate() {
+    public String getExpirationDate() {
         return expirationDate;
     }
 
-    public void setExpirationDate(Date expirationDate) {
+    public void setExpirationDate(String expirationDate) {
         this.expirationDate = expirationDate;
     }
+
+    public int getCvv() {
+        return cvv;
+    }
+
+    public void setCvv(int cvv) {
+        this.cvv = cvv;
+    }
+
 
     public String getLastName() {
         return lastName;
@@ -81,13 +93,14 @@ public class CreditCard implements Serializable {
     @Override
     public String toString() {
         return "CreditCard{" +
-            "cardNumber=" + cardNumber +
-            ", userID=" + userID +
-            ", firstName='" + firstName + '\'' +
-            ", expirationDate=" + expirationDate +
-            ", lastName='" + lastName + '\'' +
-            ", zipCode='" + zipCode + '\'' +
-            ", address='" + address + '\'' +
-            '}';
+                "cardNumber=" + cardNumber +
+                ", userID=" + userID +
+                ", firstName='" + firstName + '\'' +
+                ", expirationDate='" + expirationDate + '\'' +
+                ", cvv=" + cvv +
+                ", lastName='" + lastName + '\'' +
+                ", zipCode='" + zipCode + '\'' +
+                ", address='" + address + '\'' +
+                '}';
     }
 }
