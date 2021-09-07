@@ -3,6 +3,7 @@ package com.owly.delivery.service;
 
 import com.owly.delivery.dao.UserDao;
 import com.owly.delivery.entity.User;
+import com.owly.delivery.entity.requestBody.UserCredentials;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +36,26 @@ public class UserService {
             throw new Exception(ex);
         }
         return user;
+    }
+
+    public void changePassword(UserCredentials userCredentials) throws Exception {
+        User user = null;
+        try {
+            user = getUser(userCredentials.getEmail());
+            if(user == null){
+                throw new Exception("No such user exists");
+            }
+
+            if(!user.getPassword().equals(userCredentials.getOldPassword())){
+                throw new Exception("Password doesn't match");
+            }
+
+            user.setPassword(userCredentials.getNewPassword());
+            userDao.editUser(user);
+
+        } catch (Exception ex){
+            throw new Exception(ex);
+        }
     }
 }
 
