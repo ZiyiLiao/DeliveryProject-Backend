@@ -11,6 +11,7 @@ public class Orders implements Serializable {
     private static final long serialVersionUID = 145823L;
 
     @Id
+    @GeneratedValue
     private int orderId;
     private int userID;
     private String recipientName;
@@ -25,6 +26,27 @@ public class Orders implements Serializable {
     private String paymentStatus;
     private String Review;
     private String orderStatus;
+    private int weight; // new field
+    private int size; // new field
+
+
+    public int getWeight() {
+        return weight;
+    }
+
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
+
+
 
 
     public int getOrderId() {
@@ -141,6 +163,7 @@ public class Orders implements Serializable {
         Review = review;
     }
 
+
     @Override
     public String toString() {
         return "Orders{" +
@@ -158,6 +181,9 @@ public class Orders implements Serializable {
                 ", paymentStatus='" + paymentStatus + '\'' +
                 ", Review='" + Review + '\'' +
                 ", orderStatus='" + orderStatus + '\'' +
+                ", weight=" + weight +
+                ", size=" + size +
                 '}';
     }
+
 }
