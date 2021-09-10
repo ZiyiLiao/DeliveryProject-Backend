@@ -4,8 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.owly.delivery.entity.CreditCard;
 import com.owly.delivery.entity.OrderRequestBody;
 import com.owly.delivery.entity.Orders;
+import com.owly.delivery.entity.User;
 import com.owly.delivery.service.CreditCardService;
 import com.owly.delivery.service.OrderService;
+import com.owly.delivery.service.UserService;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,12 +36,15 @@ public class OrderController {
     private OrderService orderService;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private CreditCardService creditCardService;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @RequestMapping("/order")
-    public void order(HttpServletRequest request,
+    public int order(HttpServletRequest request,
                       HttpServletResponse response) throws IOException {
         OrderRequestBody orderRequestBody = objectMapper.readValue(request.getReader(), OrderRequestBody.class);
         Orders order = orderRequestBody.getOrder();
@@ -69,12 +74,24 @@ public class OrderController {
             System.out.println("Order Create Time " + instant);
             // set to createTime in order
             order.setCreateTime(instant);
+            // get userId from username
+            User curUser = userService.getUser(currentUserID);
+            order.setUser(curUser);
+            int curUserId = curUser.getUserId();
+            System.out.println("curUserId = " + curUserId);
+
+            // save order to database
             orderService.saveOrder(order);
             System.out.println("order confirmed");
 
-            // get the order number
-            //int orderId  = orderService.getOrderIdByCreateTime(instant);
-            //System.out.println("orderId from DB = " + orderId);
+            // tes get List<Orders> By User
+            for(Orders orderItem : curUser.getOrderList()){
+                System.out.println(orderItem.getOrderId());
+            }
+
+            // get order Id
+            System.out.println(order.getOrderId());
+            return order.getOrderId();
 
         } else {
             System.out.println("payment failed, check the input");
@@ -82,13 +99,6 @@ public class OrderController {
 
         }
 
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        if (!(authentication instanceof AnonymousAuthenticationToken)) {
-//            String currentUserName = authentication.getName();
-//            System.out.println("currentUserName: " + currentUserName);
-//        }
-//        else {
-//            System.out.println("User not logged in, cannot find user name.");
-//        }
+        return 0;
     }
 }

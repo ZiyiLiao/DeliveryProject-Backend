@@ -31,9 +31,10 @@ public class OrderService {
 
     }
 
-//    public int getOrderIdByCreateTime(Timestamp createTime) {
-//
-//        Orders order = orderDao.getOrderByCreateTime(createTime);
-//        return order.getOrderId();
-//    }
+    public int getOrderIdByCreateTime(Timestamp createTime) {
+
+        Orders order = orderDao.getOrderByCreateTime(createTime);
+        return order.getOrderId();
+    }
+
 }

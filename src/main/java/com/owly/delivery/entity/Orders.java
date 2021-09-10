@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "Orders")
@@ -13,7 +14,7 @@ public class Orders implements Serializable {
     @Id
     @GeneratedValue
     private int orderId;
-    private int userID;
+    //private int userID;
     private String recipientName;
     private String fromAddress;
     private String toAddress;
@@ -29,6 +30,10 @@ public class Orders implements Serializable {
     private int weight; // new field
     private int size; // new field
 
+    // define FK
+    @ManyToOne
+    @JsonIgnore
+    private User user;
 
     public int getWeight() {
         return weight;
@@ -45,9 +50,6 @@ public class Orders implements Serializable {
     public void setSize(int size) {
         this.size = size;
     }
-
-
-
 
     public int getOrderId() {
         return orderId;
@@ -66,13 +68,13 @@ public class Orders implements Serializable {
         this.recipientName = recipientName;
     }
 
-    public int getUserID() {
-        return userID;
-    }
-
-    public void setUserID(int userID) {
-        this.userID = userID;
-    }
+//    public int getUserID() {
+//        return userID;
+//    }
+//
+//    public void setUserID(int userID) {
+//        this.userID = userID;
+//    }
 
     public String getFromAddress() {
         return fromAddress;
@@ -163,12 +165,19 @@ public class Orders implements Serializable {
         Review = review;
     }
 
+    public User getUser(){
+        return user;
+    }
+
+    public void setUser(User user){
+        this.user = user;
+    }
+
 
     @Override
     public String toString() {
         return "Orders{" +
                 "orderId=" + orderId +
-                ", userID=" + userID +
                 ", recipientName='" + recipientName + '\'' +
                 ", fromAddress='" + fromAddress + '\'' +
                 ", toAddress='" + toAddress + '\'' +

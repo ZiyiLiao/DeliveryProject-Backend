@@ -2,6 +2,7 @@ package com.owly.delivery.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 public class User implements Serializable {
@@ -18,6 +19,9 @@ public class User implements Serializable {
     private String firstName;
     private String lastName;
     private boolean enabled;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+    private List<Orders> orderList;
 
     public void setUserId(int userId) {
         this.userId = userId;
@@ -65,6 +69,14 @@ public class User implements Serializable {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public List<Orders> getOrderList() {
+        return orderList;
+    }
+
+    public void setOrderList(List<Orders> orderList) {
+        this.orderList = orderList;
     }
 
     @Override

@@ -41,16 +41,16 @@ public class OrderDao {
 
 
     // get order by create Time, if b
-//    public Orders getOrderByCreateTime (Timestamp createTime) {
-//        Orders order = null;
-//        try (Session session = sessionFactory.openSession()) {
-//            Criteria criteria = session.createCriteria(Orders.class);
-//            order = (Orders) criteria.add(Restrictions.eq("", createTime)).uniqueResult();
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//        }
-//        return order;
-//    }
+    public Orders getOrderByCreateTime (Timestamp createTime) {
+        Orders order = null;
+        try (Session session = sessionFactory.openSession()) {
+            Criteria criteria = session.createCriteria(Orders.class);
+            order = (Orders) criteria.add(Restrictions.eq("", createTime)).uniqueResult();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return order;
+    }
 
 
 
