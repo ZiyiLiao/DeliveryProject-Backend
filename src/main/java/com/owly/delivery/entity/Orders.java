@@ -27,27 +27,27 @@ public class Orders implements Serializable {
     private String paymentStatus;
     private String Review;
     private String orderStatus;
-    private int weight; // new field
-    private int size; // new field
+    private String weight; // new field
+    private String size; // new field
 
     // define FK
     @ManyToOne
     @JsonIgnore
     private User user;
 
-    public int getWeight() {
+    public String getWeight() {
         return weight;
     }
 
-    public void setWeight(int weight) {
+    public void setWeight(String weight) {
         this.weight = weight;
     }
 
-    public int getSize() {
+    public String getSize() {
         return size;
     }
 
-    public void setSize(int size) {
+    public void setSize(String size) {
         this.size = size;
     }
 
