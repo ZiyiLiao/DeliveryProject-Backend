@@ -6,6 +6,7 @@ import com.owly.delivery.enums.ShipmentStatus;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 
 @Entity
@@ -14,7 +15,7 @@ public class Tracking {
     private int trackingId;
     private ShipmentStatus shipmentStatus;
 
-    @ManyToOne
+    @OneToOne
     private Orders order;
 
     @ManyToOne
