@@ -26,7 +26,9 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -44,7 +46,28 @@ public class OrderController {
     private CreditCardService creditCardService;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
+    @RequestMapping(value = "/user/orders", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Orders> getOrderList(HttpServletResponse response) throws IOException {
+        String currentUserID = null;
+        List<Orders> orders = new ArrayList<Orders>();
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            currentUserID = authentication.getName(); // get email not userId
+            System.out.println("currentUserName: " + currentUserID);
+            User curUser = userService.getUser(currentUserID);
+            orders = orderService.getOrderList(curUser.getUserId());
+        }
+        else {
+            System.out.println("User not logged in, cannot find user name.");
+        }
+
+        for (Orders order: orders){
+            order.setStringActualPickUpTime();
+        }
+        return orders;
+    }
 
     @RequestMapping(value = "/order", method = RequestMethod.POST)
     @ResponseBody

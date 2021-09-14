@@ -1,6 +1,7 @@
 package com.owly.delivery.dao;
 
 import com.owly.delivery.entity.Authorities;
+import com.owly.delivery.entity.Orders;
 import com.owly.delivery.entity.User;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -8,6 +9,9 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 public class UserDao {
@@ -78,5 +82,24 @@ public class UserDao {
         }
 
         return getUserById(userId);
+    }
+
+    public List<Orders> getOrderList(int userId) {
+        List<Orders> orders = new ArrayList<>();
+        try (Session session = sessionFactory.openSession()) {
+            Criteria criteria = session.createCriteria(Orders.class);
+            List<Orders> all_orders = criteria.list();
+            for(Orders order: all_orders) {
+                User user = order.getUser();
+                System.out.println("userdao:" + user.getUserId());
+                if(user.getUserId() == userId) {
+                    orders.add(order);
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return orders;
+
     }
 }
