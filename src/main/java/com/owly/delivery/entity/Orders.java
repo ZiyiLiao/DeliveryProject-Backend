@@ -4,6 +4,8 @@ import java.sql.Timestamp;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -29,11 +31,21 @@ public class Orders implements Serializable {
     private String orderStatus;
     private String weight; // new field
     private String size; // new field
+    private String stringActualPickUpTime;
 
     // define FK
     @ManyToOne
     @JsonIgnore
     private User user;
+
+    public String getStringActualPickUpTime() {
+        return stringActualPickUpTime;
+    }
+
+    public void setStringActualPickUpTime() {
+        this.stringActualPickUpTime =
+                new SimpleDateFormat("MM/dd/yyyy HH:mm").format(actualPickUpTime);;
+    }
 
     public String getWeight() {
         return weight;
