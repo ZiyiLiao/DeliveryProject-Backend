@@ -53,5 +53,39 @@ public class OrderDao {
     }
 
 
+    public Orders getOrderByOrderId (int orderId) {
+        Orders order = null;
+        try (Session session = sessionFactory.openSession()) {
+            Criteria criteria = session.createCriteria(Orders.class);
+            order = (Orders) criteria.add(Restrictions.eq("orderId", orderId)).uniqueResult();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return order;
+    }
+
+    public void saveOrderStatus(int orderId, String orderStatus) {
+//        Authorities authorities = new Authorities();
+//        authorities.setAuthorities("ROLE_USER");
+//        authorities.setEmail(user.getEmail());
+
+        Session session = null;
+        try {
+            session = sessionFactory.openSession();
+            Orders order = session.get(Orders.class, orderId);
+            order.setOrderStatus(orderStatus);
+            session.beginTransaction();
+            session.save(order);
+            session.getTransaction().commit();
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            session.getTransaction().rollback();
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
 
 }

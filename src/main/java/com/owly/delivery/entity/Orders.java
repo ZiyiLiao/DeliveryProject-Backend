@@ -31,12 +31,21 @@ public class Orders implements Serializable {
     private String orderStatus;
     private String weight; // new field
     private String size; // new field
+    private String senderName; // new field
+    private String estimatedDeliveryTime; // new field
+    private String senderPhoneNumber; // new field
+    private String recipientPhoneNumber; // new field
+    private String deliveryMethod; // new field
     private String stringActualPickUpTime;
 
     // define FK
     @ManyToOne
     @JsonIgnore
     private User user;
+
+    @OneToOne
+    Tracking tracking;
+
 
     public String getStringActualPickUpTime() {
         return stringActualPickUpTime;
@@ -186,6 +195,55 @@ public class Orders implements Serializable {
     }
 
 
+    public String getSenderName() {
+        return senderName;
+    }
+
+    public void setSenderName(String senderName) {
+        this.senderName = senderName;
+    }
+
+    public String getEstimatedDeliveryTime() {
+        return estimatedDeliveryTime;
+    }
+
+    public void setEstimatedDeliveryTime(String estimatedDeliveryTime) {
+        this.estimatedDeliveryTime = estimatedDeliveryTime;
+    }
+
+    public Tracking getTracking() {
+        return tracking;
+    }
+
+    public void setTracking(Tracking tracking) {
+        this.tracking = tracking;
+    }
+
+    public String getSenderPhoneNumber() {
+        return senderPhoneNumber;
+    }
+
+    public void setSenderPhoneNumber(String senderPhoneNumber) {
+        this.senderPhoneNumber = senderPhoneNumber;
+    }
+
+    public String getRecipientPhoneNumber() {
+        return recipientPhoneNumber;
+    }
+
+    public void setRecipientPhoneNumber(String recipientPhoneNumber) {
+        this.recipientPhoneNumber = recipientPhoneNumber;
+    }
+
+    public String getDeliveryMethod() {
+        return deliveryMethod;
+    }
+
+    public void setDeliveryMethod(String deliveryMethod) {
+        this.deliveryMethod = deliveryMethod;
+    }
+
+
     @Override
     public String toString() {
         return "Orders{" +
@@ -204,6 +262,11 @@ public class Orders implements Serializable {
                 ", orderStatus='" + orderStatus + '\'' +
                 ", weight=" + weight +
                 ", size=" + size +
+                ", senderName=" + senderName +
+                ", estimatedDeliveryTime=" + estimatedDeliveryTime +
+                ", senderPhoneNumber=" + senderPhoneNumber +
+                ", recipientPhoneNumber=" + recipientPhoneNumber +
+                ", deliveryMethod=" + deliveryMethod +
                 '}';
     }
 

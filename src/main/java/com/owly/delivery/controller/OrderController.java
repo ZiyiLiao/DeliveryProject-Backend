@@ -1,10 +1,7 @@
 package com.owly.delivery.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.owly.delivery.entity.CreditCard;
-import com.owly.delivery.entity.OrderRequestBody;
-import com.owly.delivery.entity.Orders;
-import com.owly.delivery.entity.User;
+import com.owly.delivery.entity.*;
 import com.owly.delivery.service.CreditCardService;
 import com.owly.delivery.service.OrderService;
 import com.owly.delivery.service.UserService;
@@ -15,10 +12,7 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -106,6 +100,10 @@ public class OrderController {
                 int curUserId = curUser.getUserId();
                 System.out.println("curUserId = " + curUserId);
 
+                // set order status to "SUBMITTED"
+                order.setOrderStatus("SUBMITTED");
+                order.setPaymentStatus("PAID");
+
                 // save order to database
                 orderService.saveOrder(order);
                 System.out.println("order confirmed");
@@ -129,5 +127,44 @@ public class OrderController {
             e.printStackTrace();
         }
         return 0;
+    }
+
+
+    // new API
+    @RequestMapping(value = "/getOrderStatus", method = RequestMethod.GET)
+    @ResponseBody
+    public String getOrderStatus(HttpServletRequest request,@RequestParam(value = "orderId") int orderId, HttpServletResponse response) throws IOException {
+
+        try {
+            System.out.println("getOrderStatus API, curOrderId = " + orderId);
+            return orderService.getOrderStatus(orderId);
+        }   catch (Exception e){
+            System.out.println("Error here in getOrderStatus");
+            e.printStackTrace();
+            response.setStatus(HttpStatus.BAD_REQUEST.value());
+        }
+
+        return null;
+    }
+
+    // new API
+    @RequestMapping(value = "/setOrderStatus", method = RequestMethod.POST)
+    @ResponseBody
+    public void setOrderStatus(@RequestBody Orders order, HttpServletResponse response) throws IOException {
+
+        try {
+            int curOrderId = order.getOrderId();
+            System.out.println("setOrderStatus API, curOrderId = " + curOrderId);
+            String orderStatus = order.getOrderStatus();
+            System.out.println("setOrderStatus API, orderStatus = " + orderStatus);
+            if (orderService.getOrderStatus(curOrderId) == null) {
+                response.setStatus(HttpStatus.BAD_REQUEST.value());
+            };
+            orderService.setOrderStatus(curOrderId,orderStatus);
+        }        catch (Exception e){
+            System.out.println("Error here in setOrderStatus");
+            e.printStackTrace();
+            response.setStatus(HttpStatus.BAD_REQUEST.value());
+        }
     }
 }
