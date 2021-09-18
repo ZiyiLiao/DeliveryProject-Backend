@@ -45,4 +45,15 @@ public class OrderService {
         return userDao.getOrderList(userId);
     }
 
+
+    public void setOrderStatus(int orderId, String orderStatus) {
+        orderDao.saveOrderStatus(orderId, orderStatus);
+    }
+
+    public String getOrderStatus(int orderId) {
+        Orders order = orderDao.getOrderByOrderId(orderId);
+        return order.getOrderStatus();
+    }
+
+
 }
