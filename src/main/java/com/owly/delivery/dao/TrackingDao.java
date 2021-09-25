@@ -1,5 +1,6 @@
 package com.owly.delivery.dao;
 
+import com.owly.delivery.entity.Orders;
 import com.owly.delivery.entity.Tracking;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -16,16 +17,39 @@ public class TrackingDao {
     @Autowired
     SessionFactory sessionFactory;
 
-    public ArrayList<Tracking> getTrackingByOrderID(int orderID){
-        ArrayList<Tracking> trackingList = null;
+    public Tracking getTrackingByOrderID(int orderID){
+        Tracking tracking = null;
         try (Session session = sessionFactory.openSession()){
             Criteria criteria = session.createCriteria(Tracking.class);
-            trackingList =
-                    (ArrayList<Tracking>) criteria.add(Restrictions.eq("order.id", orderID)).list();
+            tracking =
+                    (Tracking) criteria.add(Restrictions.eq("order.id", orderID)).uniqueResult();
         }
         catch (Exception ex){
             ex.printStackTrace();
         }
-        return trackingList;
+        return tracking;
+    }
+
+    // add save tracking
+    public void save(Tracking tracking) {
+//        Authorities authorities = new Authorities();
+//        authorities.setAuthorities("ROLE_USER");
+//        authorities.setEmail(user.getEmail());
+
+        Session session = null;
+        try {
+            session = sessionFactory.openSession();
+            session.beginTransaction();
+            session.save(tracking);
+            session.getTransaction().commit();
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            session.getTransaction().rollback();
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
     }
 }

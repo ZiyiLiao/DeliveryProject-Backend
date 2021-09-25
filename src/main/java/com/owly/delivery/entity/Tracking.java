@@ -3,16 +3,16 @@ package com.owly.delivery.entity;
 
 import com.owly.delivery.enums.ShipmentStatus;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 
 @Entity
 public class Tracking {
     @Id
+    @GeneratedValue
     private int trackingId;
+
+    @Enumerated(EnumType.STRING)
     private ShipmentStatus shipmentStatus;
 
     @OneToOne
@@ -54,6 +54,14 @@ public class Tracking {
 
     public void setVehicle(Vehicle vehicle) {
         this.vehicle = vehicle;
+    }
+
+    public int getTrackingId() {
+        return trackingId;
+    }
+
+    public void setTrackingId(int trackingId) {
+        this.trackingId = trackingId;
     }
 
     @Override
