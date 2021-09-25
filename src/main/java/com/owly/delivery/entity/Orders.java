@@ -43,7 +43,8 @@ public class Orders implements Serializable {
     @JsonIgnore
     private User user;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
+    @JsonIgnore
     Tracking tracking;
 
 

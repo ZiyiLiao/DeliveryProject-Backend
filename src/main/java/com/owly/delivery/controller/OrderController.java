@@ -2,8 +2,10 @@ package com.owly.delivery.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.owly.delivery.entity.*;
+import com.owly.delivery.enums.ShipmentStatus;
 import com.owly.delivery.service.CreditCardService;
 import com.owly.delivery.service.OrderService;
+import com.owly.delivery.service.TrackingService;
 import com.owly.delivery.service.UserService;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +22,10 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.Calendar;
 
 @Controller
 public class OrderController {
@@ -38,6 +38,9 @@ public class OrderController {
 
     @Autowired
     private CreditCardService creditCardService;
+
+    @Autowired
+    private TrackingService trackingService;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
     @RequestMapping(value = "/user/orders", method = RequestMethod.GET)
@@ -94,6 +97,30 @@ public class OrderController {
                 System.out.println("Order Create Time " + instant);
                 // set to createTime in order
                 order.setCreateTime(instant);
+                //prepare for calculating actualPickUpTime
+                Calendar cal = Calendar.getInstance();
+                cal.setTimeInMillis(instant.getTime());
+
+                // check if drone or robot, depends deliveryMethod
+                String deliveryMethod = order.getDeliveryMethod();
+                // if drone, add 20 mins for actualPickUpTime, another 40 mins for deliveryTime
+                if (deliveryMethod.equals("drone")) {
+                    cal.add(Calendar.SECOND, 1200);
+                    Timestamp actualPickUpTime = new Timestamp(cal.getTime().getTime());
+                    cal.add(Calendar.SECOND, 2400);
+                    Timestamp deliveryTime = new Timestamp(cal.getTime().getTime());
+                    order.setActualPickUpTime(actualPickUpTime);
+                    order.setDeliveryTime(deliveryTime);
+                }
+                if (deliveryMethod.equals("robot")){
+                    cal.add(Calendar.HOUR, 1);
+                    Timestamp actualPickUpTime = new Timestamp(cal.getTime().getTime());
+                    cal.add(Calendar.HOUR, 2);
+                    Timestamp deliveryTime = new Timestamp(cal.getTime().getTime());
+                    order.setActualPickUpTime(actualPickUpTime);
+                    order.setDeliveryTime(deliveryTime);
+                }
+
                 // get userId from username
                 User curUser = userService.getUser(currentUserID);
                 order.setUser(curUser);
@@ -104,9 +131,25 @@ public class OrderController {
                 order.setOrderStatus("SUBMITTED");
                 order.setPaymentStatus("PAID");
 
+                // create tracking object
+                Tracking curTracking = new Tracking();
+                ShipmentStatus status = ShipmentStatus.SUBMITTED;
+                curTracking.setShipmentStatus(status);
+                System.out.println(ShipmentStatus.SUBMITTED);
+                //connect to order
+                order.setTracking(curTracking);
+                curTracking.setOrder(order);
                 // save order to database
                 orderService.saveOrder(order);
                 System.out.println("order confirmed");
+
+//                Station curStation = new Station();
+//                curStation.setStationName();
+//                curTracking.setStation();
+//                trackingService.saveTracking(curTracking);
+                System.out.println("tracking created, trackingID = " + curTracking.getTrackingId());
+
+
 
                 // tes get List<Orders> By User
                 for (Orders orderItem : curUser.getOrderList()) {
