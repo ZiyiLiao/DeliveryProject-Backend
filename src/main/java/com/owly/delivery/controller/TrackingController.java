@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.owly.delivery.entity.Tracking;
 import com.owly.delivery.service.TrackingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,6 +26,9 @@ public class TrackingController {
                 @RequestParam(value = "orderID") int orderID) {
                 System.out.println("orderID:" + orderID);
                 Tracking tracking = trackingService.getTracking(orderID);
+                if (tracking == null) {
+                        response.setStatus(HttpStatus.BAD_REQUEST.value());
+                }
                 return tracking;
         }
 }
