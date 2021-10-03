@@ -48,7 +48,7 @@ public class OrderController {
     public List<Orders> getOrderList(HttpServletResponse response) throws IOException {
         String currentUserID = null;
         List<Orders> orders = new ArrayList<Orders>();
-
+        // check userId (email)
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
             currentUserID = authentication.getName(); // get email not userId
@@ -59,7 +59,7 @@ public class OrderController {
         else {
             System.out.println("User not logged in, cannot find user name.");
         }
-
+        // setStringActualPickUpTime is not in use
         for (Orders order: orders){
             order.setStringActualPickUpTime();
         }
@@ -71,12 +71,13 @@ public class OrderController {
     public int order(HttpServletRequest request,
                       HttpServletResponse response) throws IOException {
         try {
+            // get order info and creditCard info from front-end
             OrderRequestBody orderRequestBody = objectMapper.readValue(request.getReader(), OrderRequestBody.class);
             Orders order = orderRequestBody.getOrder();
             CreditCard creditCard = orderRequestBody.getCreditCard();
 
             String currentUserID = null;
-
+            // check userId (email), if not login, error
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             if (!(authentication instanceof AnonymousAuthenticationToken)) {
                 currentUserID = authentication.getName(); // get email not userId
@@ -112,6 +113,7 @@ public class OrderController {
                     order.setActualPickUpTime(actualPickUpTime);
                     order.setDeliveryTime(deliveryTime);
                 }
+                // if robot, add 1 hr for actualPickUpTime, add another 2 hrs for deliveryTime
                 if (deliveryMethod.equals("robot")){
                     cal.add(Calendar.HOUR, 1);
                     Timestamp actualPickUpTime = new Timestamp(cal.getTime().getTime());
@@ -127,7 +129,7 @@ public class OrderController {
                 int curUserId = curUser.getUserId();
                 System.out.println("curUserId = " + curUserId);
 
-                // set order status to "SUBMITTED"
+                // set order status to "SUBMITTED", set payment to "PAID"
                 order.setOrderStatus("SUBMITTED");
                 order.setPaymentStatus("PAID");
 
@@ -136,7 +138,7 @@ public class OrderController {
                 ShipmentStatus status = ShipmentStatus.SUBMITTED;
                 curTracking.setShipmentStatus(status);
                 System.out.println(ShipmentStatus.SUBMITTED);
-                //connect to order
+                //connect tracking object to order
                 order.setTracking(curTracking);
                 curTracking.setOrder(order);
                 // save order to database
@@ -151,12 +153,12 @@ public class OrderController {
 
 
 
-                // tes get List<Orders> By User
+                // tes get List<Orders> By User, check functionality purpose
                 for (Orders orderItem : curUser.getOrderList()) {
                     System.out.println(orderItem.getOrderId());
                 }
 
-                // get order Id
+                // get orderId for the newly created order object
                 System.out.println(order.getOrderId());
                 return order.getOrderId();
 
@@ -173,7 +175,7 @@ public class OrderController {
     }
 
 
-    // new API
+    // new API, get order status by orderId
     @RequestMapping(value = "/getOrderStatus", method = RequestMethod.GET)
     @ResponseBody
     public String getOrderStatus(HttpServletRequest request,@RequestParam(value = "orderId") int orderId, HttpServletResponse response) throws IOException {
@@ -190,7 +192,7 @@ public class OrderController {
         return null;
     }
 
-    // new API
+    // new API: set order status by orderId
     @RequestMapping(value = "/setOrderStatus", method = RequestMethod.POST)
     @ResponseBody
     public void setOrderStatus(@RequestBody Orders order, HttpServletResponse response) throws IOException {

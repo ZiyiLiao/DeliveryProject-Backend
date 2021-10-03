@@ -20,12 +20,17 @@ public class CreditCardService {
     @Autowired
     private CreditCardDao creditCardDao;
 
+    // get credit card info by cardNumber
     public CreditCard getCreditCard(long cardNumber ) {
 
         return creditCardDao.getCreditCard(cardNumber);
 
     }
 
+    // verify credit card info
+    // get credit card by card number
+    // verify card by first last names, cvv, expirationDate
+    // if fail, return false
     public boolean verifyCreditCard(CreditCard creditCard) {
 
         if (creditCard == null) {

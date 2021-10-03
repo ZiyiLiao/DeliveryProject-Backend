@@ -17,12 +17,14 @@ public class TrackingService {
     @Autowired
     TrackingDao trackingDao;
 
+    // get tracking by orderID
     public Tracking getTracking (int orderID) {
 
         Tracking tracking = trackingDao.getTrackingByOrderID(orderID);
         return tracking;
     }
 
+    // save tracking object to database
     public void saveTracking(Tracking tracking) {
 
 //        Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
