@@ -40,19 +40,19 @@ public class OrderDao {
     }
 
 
-    // get order by create Time, if b
-    public Orders getOrderByCreateTime (Timestamp createTime) {
-        Orders order = null;
-        try (Session session = sessionFactory.openSession()) {
-            Criteria criteria = session.createCriteria(Orders.class);
-            order = (Orders) criteria.add(Restrictions.eq("", createTime)).uniqueResult();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return order;
-    }
+//    // get order by create Time
+//    public Orders getOrderByCreateTime (Timestamp createTime) {
+//        Orders order = null;
+//        try (Session session = sessionFactory.openSession()) {
+//            Criteria criteria = session.createCriteria(Orders.class);
+//            order = (Orders) criteria.add(Restrictions.eq("", createTime)).uniqueResult();
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//        }
+//        return order;
+//    }
 
-
+    // get order by orderId
     public Orders getOrderByOrderId (int orderId) {
         Orders order = null;
         try (Session session = sessionFactory.openSession()) {
@@ -64,6 +64,7 @@ public class OrderDao {
         return order;
     }
 
+    // get order by orderId, set to status "orderStatus"
     public void saveOrderStatus(int orderId, String orderStatus) {
 //        Authorities authorities = new Authorities();
 //        authorities.setAuthorities("ROLE_USER");

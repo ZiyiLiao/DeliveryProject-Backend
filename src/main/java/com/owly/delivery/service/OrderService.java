@@ -25,7 +25,7 @@ public class OrderService {
     @Autowired
     private UserDao userDao;
 
-    //save Order service, when confirm the order, send the order info to Orders table
+    //save order service, when confirm the order, send the order info to Orders table
     public void saveOrder(Orders order) {
 
         Authentication loggedInUser = SecurityContextHolder.getContext().getAuthentication();
@@ -36,20 +36,18 @@ public class OrderService {
 
     }
 
-    public int getOrderIdByCreateTime(Timestamp createTime) {
-
-        Orders order = orderDao.getOrderByCreateTime(createTime);
-        return order.getOrderId();
-    }
+    // search order list by userId
     public List<Orders> getOrderList(int userId) {
         return userDao.getOrderList(userId);
     }
 
 
+    // set order status by orderId
     public void setOrderStatus(int orderId, String orderStatus) {
         orderDao.saveOrderStatus(orderId, orderStatus);
     }
 
+    // get order status by orderId
     public String getOrderStatus(int orderId) {
         Orders order = orderDao.getOrderByOrderId(orderId);
         return order.getOrderStatus();
